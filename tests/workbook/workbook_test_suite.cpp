@@ -67,6 +67,7 @@ public:
         register_test(test_id_gen);
         register_test(test_load_file);
         register_test(test_Issue279);
+        register_test(test_no_visible_worksheets);
     }
 
     void test_active_sheet()
@@ -490,6 +491,15 @@ public:
         ws2.title("REPORT");
         //save a copy file
         wb.save("temp.xlsx");
+    }
+
+	void test_no_visible_worksheets()
+    {
+        xlnt::workbook wb;
+        xlnt::page_setup setup;
+        setup.sheet_state(xlnt::sheet_state::hidden);
+        wb.active_sheet().page_setup(setup);
+        xlnt_assert_throws(wb.save("temp.xlsx"), xlnt::no_visible_worksheets);
     }
 };
 static workbook_test_suite x;
