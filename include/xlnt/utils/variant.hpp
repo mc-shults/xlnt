@@ -111,31 +111,6 @@ public:
     variant(const datetime &value);
 
     /// <summary>
-    /// Creates a vector_i4-type variant with the given value.
-    /// </summary>
-    variant(const std::initializer_list<std::int32_t> &value);
-
-    /// <summary>
-    /// Creates a vector_i4-type variant with the given value.
-    /// </summary>
-    variant(const std::vector<std::int32_t> &value);
-
-    /// <summary>
-    /// Creates a vector_string-type variant with the given value.
-    /// </summary>
-    variant(const std::initializer_list<const char *> &value);
-
-    /// <summary>
-    /// Creates a vector_string-type variant with the given value.
-    /// </summary>
-    variant(const std::vector<const char *> &value);
-
-    /// <summary>
-    /// Creates a vector_string-type variant with the given value.
-    /// </summary>
-    variant(const std::initializer_list<std::string> &value);
-
-    /// <summary>
     /// Creates a vector_string-type variant with the given value.
     /// </summary>
     variant(const std::vector<std::string> &value);

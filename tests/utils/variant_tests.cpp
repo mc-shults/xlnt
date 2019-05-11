@@ -37,9 +37,15 @@ public:
 
     void test_null()
     {
-        xlnt::variant var_null;
-        xlnt_assert_equals(var_null.value_type(), xlnt::variant::type::null);
-        xlnt_assert(var_null.is(xlnt::variant::type::null));
+        xlnt::variant var_null1;
+        xlnt_assert_equals(var_null1.value_type(), xlnt::variant::type::null);
+        xlnt_assert(var_null1.is(xlnt::variant::type::null));
+        
+		xlnt::variant var_null2;
+        xlnt_assert_equals(var_null1, var_null2);
+
+		xlnt::variant var_str("test");
+        xlnt_assert(!(var_null1 == var_str));
     }
 
     void test_int32()

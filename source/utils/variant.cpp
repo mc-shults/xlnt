@@ -64,59 +64,9 @@ variant::variant(const datetime &value)
 
 }
 
-variant::variant(const std::initializer_list<int> &value)
-    : type_(type::vector),
-    i4_value_(0)
-{
-    for (const auto &v : value)
-    {
-        vector_value_.emplace_back(v);
-    }
-}
-
-variant::variant(const std::vector<int> &value)
-    : type_(type::vector),
-    i4_value_(0)
-{
-    for (const auto &v : value)
-    {
-        vector_value_.emplace_back(v);
-    }
-}
-
-variant::variant(const std::initializer_list<const char *> &value)
-    : type_(type::vector),
-    i4_value_(0)
-{
-    for (const auto &v : value)
-    {
-        vector_value_.emplace_back(v);
-    }
-}
-
-variant::variant(const std::vector<const char *> &value)
-    : type_(type::vector),
-    i4_value_(0)
-{
-    for (const auto &v : value)
-    {
-        vector_value_.emplace_back(v);
-    }
-}
-
-variant::variant(const std::initializer_list<std::string> &value)
-    : type_(type::vector),
-    i4_value_(0)
-{
-    for (const auto &v : value)
-    {
-        vector_value_.emplace_back(v);
-    }
-}
-
 variant::variant(const std::vector<std::string> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
