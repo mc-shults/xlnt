@@ -112,28 +112,6 @@ public:
 };
 
 /// <summary>
-/// Exception when a referenced number format is not in the stylesheet.
-/// </summary>
-class XLNT_API missing_number_format : public exception
-{
-public:
-    /// <summary>
-    /// Default constructor.
-    /// </summary>
-    missing_number_format() = default;
-
-    /// <summary>
-    /// Default copy constructor.
-    /// </summary>
-    missing_number_format(const missing_number_format &) = default;
-
-    /// <summary>
-    /// Destructor
-    /// </summary>
-    virtual ~missing_number_format();
-};
-
-/// <summary>
 /// Exception for trying to open a non-XLSX file.
 /// </summary>
 class XLNT_API invalid_file : public exception
