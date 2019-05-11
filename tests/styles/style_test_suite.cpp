@@ -44,6 +44,8 @@ public:
 
         // number format
         xlnt_assert_equals(copy_style.name(), "test_style");
+        copy_style.name("test_style_2");
+        xlnt_assert_equals(copy_style.name(), "test_style_2");
         xlnt_assert_equals(copy_style.number_format(), xlnt::number_format::date_ddmmyyyy());
         //xlnt_assert(!copy_style.number_format_applied()); // this doesn't seem to have sensible behaviour?
         copy_style.number_format(xlnt::number_format::date_datetime(), true); // true applied param
@@ -60,6 +62,49 @@ public:
         xlnt_assert(!copy_style.quote_prefix());
         copy_style.quote_prefix(true);
         xlnt_assert(copy_style.quote_prefix());
+
+		xlnt_assert(!copy_style.hidden());
+        copy_style.hidden(true);
+		xlnt_assert(copy_style.hidden());
+
+		xlnt_assert(!copy_style.alignment_applied());
+		xlnt::alignment alignment;
+		alignment.vertical(xlnt::vertical_alignment::center);
+		copy_style.alignment(alignment, true);
+        xlnt_assert(copy_style.alignment_applied());
+        xlnt_assert_equals(copy_style.alignment().vertical(), xlnt::vertical_alignment::center);
+
+        copy_style.fill(xlnt::fill::solid(xlnt::color::red()), false);
+		xlnt_assert(!copy_style.fill_applied());
+        copy_style.fill(xlnt::fill::solid(xlnt::color::red()), true);
+        xlnt_assert(copy_style.fill_applied());
+        xlnt_assert_equals(copy_style.fill().pattern_fill().type(), xlnt::pattern_fill_type::solid);
+
+		xlnt::border border;
+        border.diagonal(xlnt::diagonal_direction::down);
+		copy_style.border(border, false);
+        xlnt_assert(!copy_style.border_applied());
+        copy_style.border(border, true);
+        xlnt_assert(copy_style.border_applied());
+        xlnt_assert_equals(copy_style.border().diagonal(), xlnt::diagonal_direction::down);
+
+		xlnt::font font;
+        font.italic(true);
+        copy_style.font(font, false);
+        xlnt_assert(!copy_style.font_applied());
+        copy_style.font(font, true);
+        xlnt_assert(copy_style.font_applied());
+        xlnt_assert(copy_style.font().italic());
+
+		xlnt::protection protection;
+        protection.locked(true);
+        copy_style.protection(protection, false);
+        xlnt_assert(!copy_style.protection_applied());
+        copy_style.protection(protection, true);
+        xlnt_assert(copy_style.protection_applied());
+        xlnt_assert(copy_style.protection().locked());
+
+        xlnt_assert(!(test_style != copy_style));
     }
 };
 static style_test_suite x;
