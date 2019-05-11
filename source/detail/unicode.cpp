@@ -49,25 +49,5 @@ std::string utf16_to_utf8(const std::u16string &utf16_string)
     return result;
 }
 
-std::string latin1_to_utf8(const std::string &latin1)
-{
-    std::string utf8;
-
-    for (auto character : latin1)
-    {
-        if (character >= 0)
-        {
-            utf8.push_back(character);
-        }
-        else
-        {
-            utf8.push_back(static_cast<char>(0xc0 + (character >> 6)));
-            utf8.push_back(static_cast<char>(0x80 + (character & 0x3f)));
-        }
-    }
-
-    return utf8;
-}
-
 } // namespace detail
 } // namespace xlnt
