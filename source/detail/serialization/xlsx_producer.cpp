@@ -2184,7 +2184,8 @@ void xlsx_producer::write_worksheet(const relationship &rel)
                 return true;
             }
 
-            for (auto row = ws.lowest_row(); row <= ws.highest_row(); ++row)
+            auto highest = ws.highest_row();
+            for (auto row = ws.lowest_row(); row <= highest; ++row)
             {
                 if (ws.has_row_properties(row) && ws.row_properties(row).dy_descent.is_set())
                 {
@@ -2357,11 +2358,9 @@ void xlsx_producer::write_worksheet(const relationship &rel)
         write_attribute("defaultColWidth",
             format_properties.default_column_width.get());
     }
-    if (format_properties.default_row_height.is_set())
-    {
-        write_attribute("defaultRowHeight",
-            format_properties.default_row_height.get());
-    }
+
+    write_attribute("defaultRowHeight",
+            format_properties.default_row_height);
 
     if (format_properties.dy_descent.is_set())
     {
@@ -3334,7 +3333,6 @@ void xlsx_producer::write_color(const xlnt::color &color)
         write_attribute("auto", write_bool(true));
         return;
     }
-
     switch (color.type())
     {
     case xlnt::color_type::theme:
@@ -3349,8 +3347,7 @@ void xlsx_producer::write_color(const xlnt::color &color)
         write_attribute("rgb", color.rgb().hex_string());
         break;
     }
-
-    if (color.tint() != 0.0)
+    if (color.has_tint())
     {
         write_attribute("tint", serialize_number_to_string(color.tint()));
     }
