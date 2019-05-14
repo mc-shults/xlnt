@@ -745,12 +745,6 @@ bool cell::has_format() const
 
 void cell::format(const class format new_format)
 {
-    if (has_format())
-    {
-        format().d_->references -= format().d_->references > 0 ? 1 : 0;
-    }
-
-    ++new_format.d_->references;
     d_->format_ = new_format.d_;
 }
 
@@ -830,7 +824,6 @@ void cell::clear_format()
 {
     if (d_->format_.is_set())
     {
-        format().d_->references -= format().d_->references > 0 ? 1 : 0;
         d_->format_.clear();
     }
 }

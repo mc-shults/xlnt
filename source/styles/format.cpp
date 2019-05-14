@@ -29,7 +29,7 @@
 
 namespace xlnt {
 
-format::format(detail::format_impl *d)
+format::format(format_impl_ptr d)
     : d_(d)
 {
 }
@@ -53,6 +53,7 @@ format format::style(const std::string &new_style)
 
 bool format::has_style() const
 {
+    d_->style;
     return d_->style.is_set();
 }
 

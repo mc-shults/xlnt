@@ -31,8 +31,9 @@
 #include <xlnt/cell/rich_text.hpp>
 #include <xlnt/packaging/relationship.hpp>
 #include <xlnt/utils/optional.hpp>
-#include <detail/implementations/format_impl.hpp>
+#include <xlnt/utils/format_impl_ptr.hpp>
 #include <detail/implementations/hyperlink_impl.hpp>
+#include <detail/implementations/format_impl.hpp>
 
 namespace xlnt {
 namespace detail {
@@ -42,9 +43,9 @@ struct worksheet_impl;
 struct cell_impl
 {
     cell_impl();
-    cell_impl(const cell_impl &other);
+    cell_impl(const cell_impl &other) = default;
     cell_impl(cell_impl &&other) = default;
-    cell_impl &operator=(const cell_impl &other);
+    cell_impl &operator=(const cell_impl &other) = default;
     cell_impl &operator=(cell_impl &&other) = default;
     
     cell_type type_;
@@ -61,7 +62,7 @@ struct cell_impl
 
     optional<std::string> formula_;
     optional<hyperlink_impl> hyperlink_;
-    optional<format_impl *> format_;
+    optional<format_impl_ptr> format_;
     optional<comment *> comment_;
 };
 

@@ -39,52 +39,6 @@ cell_impl::cell_impl()
 {
 }
 
-cell_impl::cell_impl(const cell_impl &other)
-{
-    type_ = other.type_;
-    parent_ = other.parent_;
-    column_ = other.column_;
-    row_ = other.row_;
-    is_merged_ = other.is_merged_;
-    value_text_ = other.value_text_;
-    value_numeric_ = other.value_numeric_;
-    formula_ = other.formula_;
-    hyperlink_ = other.hyperlink_;
-    format_ = other.format_;
-    comment_ = other.comment_;
-
-    if (format_.is_set())
-    {
-        format_.get()->references++;
-    }
-}
-
-cell_impl &cell_impl::operator=(const cell_impl &other)
-{
-    if (format_.is_set())
-    {
-        format_.get()->references--;
-    }
-	
-    type_ = other.type_;
-    parent_ = other.parent_;
-    column_ = other.column_;
-    row_ = other.row_;
-    is_merged_ = other.is_merged_;
-    value_text_ = other.value_text_;
-    value_numeric_ = other.value_numeric_;
-    formula_ = other.formula_;
-    hyperlink_ = other.hyperlink_;
-    format_ = other.format_;
-    comment_ = other.comment_;
-
-    if (format_.is_set())
-    {
-        format_.get()->references++;
-    }
-
-	return *this;
-}
 
 } // namespace detail
 } // namespace xlnt

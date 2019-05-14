@@ -59,7 +59,7 @@ struct stylesheet
         
         impl.references = default_format ? 1 : 0;
         
-        return xlnt::format(&impl);
+        return xlnt::format(xlnt::format_impl_ptr(&impl));
     }
 
     class xlnt::format format(std::size_t index)
@@ -381,7 +381,7 @@ struct stylesheet
         }
     }
 
-    format_impl *find_or_create(format_impl &pattern)
+    format_impl_ptr find_or_create(format_impl &pattern)
     {
         pattern.references = 0;
         std::size_t id = 0;
@@ -412,7 +412,7 @@ struct stylesheet
         return &result;
     }
 
-    format_impl *find_or_create_with(format_impl *pattern, const std::string &style_name)
+    format_impl_ptr find_or_create_with(format_impl_ptr pattern, const std::string &style_name)
     {
         format_impl new_format = *pattern;
         new_format.style = style_name;
@@ -423,7 +423,7 @@ struct stylesheet
         return find_or_create(new_format);
     }
 
-    format_impl *find_or_create_with(format_impl *pattern, const alignment &new_alignment, optional<bool> applied)
+    format_impl_ptr find_or_create_with(format_impl_ptr pattern, const alignment &new_alignment, optional<bool> applied)
     {
         format_impl new_format = *pattern;
         new_format.alignment_id = find_or_add(alignments, new_alignment);
@@ -435,7 +435,7 @@ struct stylesheet
         return find_or_create(new_format);
     }
 
-    format_impl *find_or_create_with(format_impl *pattern, const border &new_border, optional<bool> applied)
+    format_impl_ptr find_or_create_with(format_impl_ptr pattern, const border &new_border, optional<bool> applied)
     {
         format_impl new_format = *pattern;
         new_format.border_id = find_or_add(borders, new_border);
@@ -447,7 +447,7 @@ struct stylesheet
         return find_or_create(new_format);
     }
     
-    format_impl *find_or_create_with(format_impl *pattern, const fill &new_fill, optional<bool> applied)
+    format_impl_ptr find_or_create_with(format_impl_ptr pattern, const fill &new_fill, optional<bool> applied)
     {
         format_impl new_format = *pattern;
         new_format.fill_id = find_or_add(fills, new_fill);
@@ -459,7 +459,7 @@ struct stylesheet
         return find_or_create(new_format);
     }
     
-    format_impl *find_or_create_with(format_impl *pattern, const font &new_font, optional<bool> applied)
+    format_impl_ptr find_or_create_with(format_impl_ptr pattern, const font &new_font, optional<bool> applied)
     {
         format_impl new_format = *pattern;
         new_format.font_id = find_or_add(fonts, new_font);
@@ -471,7 +471,7 @@ struct stylesheet
         return find_or_create(new_format);
     }
     
-    format_impl *find_or_create_with(format_impl *pattern, const number_format &new_number_format, optional<bool> applied)
+    format_impl_ptr find_or_create_with(format_impl_ptr pattern, const number_format &new_number_format, optional<bool> applied)
     {
         format_impl new_format = *pattern;
         if (new_number_format.id() >= 164)
@@ -487,7 +487,7 @@ struct stylesheet
         return find_or_create(new_format);
     }
     
-    format_impl *find_or_create_with(format_impl *pattern, const protection &new_protection, optional<bool> applied)
+    format_impl_ptr find_or_create_with(format_impl_ptr pattern, const protection &new_protection, optional<bool> applied)
     {
         format_impl new_format = *pattern;
         new_format.protection_id = find_or_add(protections, new_protection);

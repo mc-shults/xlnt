@@ -27,6 +27,7 @@
 #include <string>
 
 #include <xlnt/xlnt_config.hpp>
+#include <xlnt/utils/format_impl_ptr.hpp>
 
 namespace xlnt {
 
@@ -41,7 +42,6 @@ class style;
 
 namespace detail {
 
-struct format_impl;
 struct stylesheet;
 class xlsx_producer;
 
@@ -219,12 +219,12 @@ private:
     /// <summary>
     /// Constructs a format from an impl pointer.
     /// </summary>
-    format(detail::format_impl *d);
+    format(format_impl_ptr d);
 
     /// <summary>
     /// The internal implementation of this format
     /// </summary>
-    detail::format_impl *d_;
+    format_impl_ptr d_;
 };
 
 } // namespace xlnt
