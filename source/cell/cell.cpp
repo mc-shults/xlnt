@@ -743,21 +743,18 @@ bool cell::has_format() const
     return d_->format_.is_set();
 }
 
-void cell::format(const class format new_format, bool increment_references /*= false*/)
+void cell::format(const class format new_format)
 {
-    if (increment_references)
+    ++new_format.d_->references;
+
+    if (has_format())
     {
-        ++new_format.d_->references;
+        format().d_->references -= format().d_->references > 0 ? 1 : 0;
 
-        if (has_format())
-        {
-            format().d_->references -= format().d_->references > 0 ? 1 : 0;
-          
-            if (format().d_->references == 0)
-                format().d_->parent->garbage_collect();
-        }
-
+        if (format().d_->references == 0)
+            format().d_->parent->garbage_collect();
     }
+
     d_->format_ = new_format.d_;
 }
 

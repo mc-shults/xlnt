@@ -399,15 +399,6 @@ struct stylesheet
 
         result.parent = this;
         result.id = id;
-        result.references++;
-        
-        if (id != pattern.id)
-        {
-            iter = format_impls.begin();
-            std::advance(iter, static_cast<std::list<format_impl>::difference_type>(pattern.id));
-            iter->references -= iter->references > 0 ? 1 : 0;
-            garbage_collect();
-        }
 
         return &result;
     }

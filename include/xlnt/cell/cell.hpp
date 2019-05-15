@@ -344,7 +344,7 @@ public:
     /// <summary>
     /// Applies the cell-level formatting of new_format to this cell.
     /// </summary>
-    void format(const class format new_format, bool increment_references = false);
+    void format(const class format new_format);
 
     /// <summary>
     /// Removes the cell-level formatting from this cell.

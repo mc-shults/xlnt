@@ -730,7 +730,7 @@ void xlsx_consumer::read_worksheet_sheetdata()
 
             if (parser().attribute_present("s"))
             {
-                cell.format(target_.format(static_cast<std::size_t>(std::stoull(parser().attribute("s")))), true);
+                cell.format(target_.format(static_cast<std::size_t>(std::stoull(parser().attribute("s")))));
             }
 
             auto has_value = false;
