@@ -36,7 +36,7 @@ public:
 
     void test_format_references()
     {
-        const std::string file_name = "format_references.xlsx";
+        const std::string file_name = "format_references";
 
         xlnt::workbook wb;
         auto ws = wb.active_sheet();
