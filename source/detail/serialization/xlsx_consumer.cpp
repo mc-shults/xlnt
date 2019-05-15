@@ -2603,30 +2603,28 @@ void xlsx_consumer::read_stylesheet()
 
     for (const auto &record : format_records)
     {
-        stylesheet.format_impls.push_back(format_impl());
-        auto &new_format = stylesheet.format_impls.back();
+        auto new_format = new format_impl;
 
-        new_format.id = record_index++;
-        new_format.parent = &stylesheet;
+        new_format->id = record_index++;
+        new_format->parent = &stylesheet;
 
-        ++new_format.references;
+        new_format->alignment_id = record.first.alignment_id;
+        new_format->alignment_applied = record.first.alignment_applied;
+        new_format->border_id = record.first.border_id;
+        new_format->border_applied = record.first.border_applied;
+        new_format->fill_id = record.first.fill_id;
+        new_format->fill_applied = record.first.fill_applied;
+        new_format->font_id = record.first.font_id;
+        new_format->font_applied = record.first.font_applied;
+        new_format->number_format_id = record.first.number_format_id;
+        new_format->number_format_applied = record.first.number_format_applied;
+        new_format->protection_id = record.first.protection_id;
+        new_format->protection_applied = record.first.protection_applied;
+        new_format->pivot_button_ = record.first.pivot_button_;
+        new_format->quote_prefix_ = record.first.quote_prefix_;
 
-        new_format.alignment_id = record.first.alignment_id;
-        new_format.alignment_applied = record.first.alignment_applied;
-        new_format.border_id = record.first.border_id;
-        new_format.border_applied = record.first.border_applied;
-        new_format.fill_id = record.first.fill_id;
-        new_format.fill_applied = record.first.fill_applied;
-        new_format.font_id = record.first.font_id;
-        new_format.font_applied = record.first.font_applied;
-        new_format.number_format_id = record.first.number_format_id;
-        new_format.number_format_applied = record.first.number_format_applied;
-        new_format.protection_id = record.first.protection_id;
-        new_format.protection_applied = record.first.protection_applied;
-        new_format.pivot_button_ = record.first.pivot_button_;
-        new_format.quote_prefix_ = record.first.quote_prefix_;
-
-        set_style_by_xfid(styles, record.second, new_format.style);
+        set_style_by_xfid(styles, record.second, new_format->style);
+        stylesheet.temp_format_impls.push_back(new_format);
     }
 }
 

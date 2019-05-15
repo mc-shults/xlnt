@@ -61,7 +61,7 @@ struct cell_impl
 
     optional<std::string> formula_;
     optional<hyperlink_impl> hyperlink_;
-    optional<format_impl *> format_;
+    std::shared_ptr<format_impl> format_;
     optional<comment *> comment_;
 };
 
@@ -76,7 +76,7 @@ inline bool operator==(const cell_impl &lhs, const cell_impl &rhs)
         && lhs.value_numeric_ == rhs.value_numeric_
         && lhs.formula_ == rhs.formula_
         && lhs.hyperlink_ == rhs.hyperlink_
-        && (lhs.format_.is_set() == rhs.format_.is_set() && (!lhs.format_.is_set() || *lhs.format_.get() == *rhs.format_.get()))
+        && (lhs.format_ == rhs.format_ && (!lhs.format_ || *lhs.format_.get() == *rhs.format_.get()))
         && (lhs.comment_.is_set() == rhs.comment_.is_set() && (!lhs.comment_.is_set() || *lhs.comment_.get() == *rhs.comment_.get()));
 }
 

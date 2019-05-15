@@ -397,11 +397,14 @@ public:
         xlnt_assert(wb.active_sheet().cell("B2").has_style());
         wb.clear_styles();
         xlnt_assert(!wb.active_sheet().cell("B2").has_style());
-        xlnt::format format = wb.create_format();
-        xlnt::font font;
-        font.size(41);
-        format.font(font, true);
-        wb.active_sheet().cell("B2").format(format);
+        {
+            xlnt::format format = wb.create_format();
+            xlnt::font font;
+            font.size(41);
+            format.font(font, true);
+            wb.active_sheet().cell("B2").format(format);
+        }
+        
         xlnt_assert(wb.active_sheet().cell("B2").has_format());
         wb.clear_formats();
         xlnt_assert(!wb.active_sheet().cell("B2").has_format());
@@ -497,7 +500,7 @@ public:
         wb.save("temp.xlsx");
     }
 
-	void test_no_visible_worksheets()
+    void test_no_visible_worksheets()
     {
         xlnt::workbook wb;
         xlnt::page_setup setup;

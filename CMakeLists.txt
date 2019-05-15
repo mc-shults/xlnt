@@ -22,7 +22,7 @@ endif()
 # Optional components
 option(TESTS "Set to OFF to skip building test executable (in ./tests)" ON)
 option(SAMPLES "Set to ON to build executable code samples (in ./samples)" OFF)
-option(BENCHMARKS "Set to ON to build performance benchmarks (in ./benchmarks)" OFF)
+option(BENCHMARKS "Set to ON to build performance benchmarks (in ./benchmarks)" ON)
 option(PYTHON "Set to ON to build Arrow conversion functions (in ./python)" OFF)
 
 # Platform specific options

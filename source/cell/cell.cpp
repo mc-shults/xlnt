@@ -740,17 +740,11 @@ std::string cell::to_string() const
 
 bool cell::has_format() const
 {
-    return d_->format_.is_set();
+    return (bool)d_->format_;
 }
 
 void cell::format(const class format new_format)
 {
-    if (has_format())
-    {
-        format().d_->references -= format().d_->references > 0 ? 1 : 0;
-    }
-
-    ++new_format.d_->references;
     d_->format_ = new_format.d_;
 }
 
@@ -828,11 +822,7 @@ void cell::value(const std::string &value_string, bool infer_type)
 
 void cell::clear_format()
 {
-    if (d_->format_.is_set())
-    {
-        format().d_->references -= format().d_->references > 0 ? 1 : 0;
-        d_->format_.clear();
-    }
+    d_->format_.reset();
 }
 
 void cell::clear_style()
@@ -881,22 +871,22 @@ bool cell::has_style() const
 
 format cell::modifiable_format()
 {
-    if (!d_->format_.is_set())
+    if (!d_->format_)
     {
         throw invalid_attribute();
     }
 
-    return xlnt::format(d_->format_.get());
+    return xlnt::format(d_->format_);
 }
 
 const format cell::format() const
 {
-    if (!d_->format_.is_set())
+    if (!d_->format_)
     {
         throw invalid_attribute();
     }
 
-    return xlnt::format(d_->format_.get());
+    return xlnt::format(d_->format_);
 }
 
 alignment cell::alignment() const

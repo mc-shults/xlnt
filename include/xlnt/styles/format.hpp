@@ -219,12 +219,12 @@ private:
     /// <summary>
     /// Constructs a format from an impl pointer.
     /// </summary>
-    format(detail::format_impl *d);
+    format(std::shared_ptr<detail::format_impl> d);
 
     /// <summary>
     /// The internal implementation of this format
     /// </summary>
-    detail::format_impl *d_;
+    std::shared_ptr<detail::format_impl> d_;
 };
 
 } // namespace xlnt
