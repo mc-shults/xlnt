@@ -109,7 +109,7 @@
 
 #define __XLNT_LIB_NAME __XLNT_PLATFORM "-" __XLNT_DEBUG "\\source\\xlnt" __XLNT_DEBUG_SHORT ".lib"
 
-#if defined(_GTL_AUTO_LINK)
+#if defined(_XLNT_AUTO_LINK)
 #pragma comment(lib, __XLNT_LIB_NAME)
 #pragma message("Automatically linking with " __XLNT_LIB_NAME)
 #endif

@@ -21,52 +21,51 @@
 // @license: http://www.opensource.org/licenses/mit-license.php
 // @author: see AUTHORS file
 
-#include <xlnt/utils/variant.hpp>
 #include <xlnt/utils/datetime.hpp>
+#include <xlnt/utils/variant.hpp>
 
 namespace xlnt {
 
 variant::variant()
     : type_(type::null),
-    i4_value_(0)
-{}
-
-variant::variant(const std::string &value)
-    : type_(type::lpstr),
-    lpstr_value_(value),
-    i4_value_(0)
+      i4_value_(0)
 {
 }
 
-variant::variant(const char *value) : variant(std::string(value))
+variant::variant(const std::string &value)
+    : type_(type::lpstr),
+      lpstr_value_(value),
+      i4_value_(0)
+{
+}
+
+variant::variant(const char *value)
+    : variant(std::string(value))
 {
 }
 
 variant::variant(int32_t value)
     : type_(type::i4),
-    i4_value_(value)
+      i4_value_(value)
 {
-
 }
 
 variant::variant(bool value)
     : type_(type::boolean),
-    i4_value_(value ? 1 : 0)
+      i4_value_(value ? 1 : 0)
 {
-
 }
 
 variant::variant(const datetime &value)
     : type_(type::date),
-    lpstr_value_(value.to_iso_string()),
+      lpstr_value_(value.to_iso_string()),
       i4_value_(0)
 {
-
 }
 
 variant::variant(const std::initializer_list<int> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
@@ -76,7 +75,7 @@ variant::variant(const std::initializer_list<int> &value)
 
 variant::variant(const std::vector<int> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
@@ -86,7 +85,7 @@ variant::variant(const std::vector<int> &value)
 
 variant::variant(const std::initializer_list<const char *> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
@@ -96,7 +95,7 @@ variant::variant(const std::initializer_list<const char *> &value)
 
 variant::variant(const std::vector<const char *> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
@@ -106,7 +105,7 @@ variant::variant(const std::vector<const char *> &value)
 
 variant::variant(const std::initializer_list<std::string> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
@@ -116,7 +115,7 @@ variant::variant(const std::initializer_list<std::string> &value)
 
 variant::variant(const std::vector<std::string> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
@@ -126,7 +125,7 @@ variant::variant(const std::vector<std::string> &value)
 
 variant::variant(const std::vector<variant> &value)
     : type_(type::vector),
-    i4_value_(0)
+      i4_value_(0)
 {
     for (const auto &v : value)
     {
@@ -161,31 +160,31 @@ bool variant::is(type t) const
     return type_ == t;
 }
 
-template<>
+template <>
 XLNT_API std::string variant::get() const
 {
     return lpstr_value_;
 }
 
-template<>
+template <>
 XLNT_API std::vector<variant> variant::get() const
 {
     return vector_value_;
 }
 
-template<>
+template <>
 XLNT_API bool variant::get() const
 {
     return i4_value_ != 0;
 }
 
-template<>
+template <>
 XLNT_API std::int32_t variant::get() const
 {
     return i4_value_;
 }
 
-template<>
+template <>
 XLNT_API datetime variant::get() const
 {
     return datetime::from_iso_string(lpstr_value_);
