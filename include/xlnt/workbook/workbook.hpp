@@ -672,7 +672,7 @@ public:
     /// <summary>
     /// Creates a new format and returns it.
     /// </summary>
-    xlnt::format create_format(bool default_format = false);
+    xlnt::format create_format();
 
     /// <summary>
     /// Clear all cell-level formatting and formats from the styelsheet. This leaves
@@ -910,6 +910,11 @@ private:
     /// Sheet 1 should be rId1, sheet 2 should be rId2, etc.
     /// </summary>
     void reorder_relationships();
+
+    /// <summary>
+    /// Creates a default format and returns it.
+    /// </summary>
+    xlnt::format create_default_format();
 
     /// <summary>
     /// An opaque pointer to a structure that holds all of the data relating to this workbook.

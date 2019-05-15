@@ -483,12 +483,15 @@ workbook workbook::empty()
         .font(default_font)
         .number_format(xlnt::number_format::general());
 
-    wb.create_format(true)
-        .border(default_border)
-        .fill(default_fill)
-        .font(default_font)
-        .number_format(xlnt::number_format::general())
-        .style("Normal");
+	//detail::format_impl default_format;
+    //default_format.border_id = 0;
+	//default_format.border_applied = true;
+    //default_format.fill_id = 0;
+    //default_format.fill_applied = true;
+    //default_format.font_id = 0;
+    //default_format.font_applied = true;
+
+    wb.create_default_format();
 
     xlnt::calculation_properties calc_props;
     calc_props.calc_id = 150000;
@@ -1259,10 +1262,10 @@ std::vector<named_range> workbook::named_ranges() const
     return named_ranges;
 }
 
-format workbook::create_format(bool default_format)
+format workbook::create_format()
 {
     register_workbook_part(relationship_type::stylesheet);
-    return d_->stylesheet_.get().create_format(default_format);
+    return d_->stylesheet_.get().create_format();
 }
 
 bool workbook::has_style(const std::string &name) const
@@ -1678,6 +1681,12 @@ void workbook::reorder_relationships()
         manifest().register_relationship(relationship(new_id(), old_rel.type(),
             old_rel.source(), old_rel.target(), old_rel.target_mode()));
     }
+}
+
+xlnt::format workbook::create_default_format()
+{
+    register_workbook_part(relationship_type::stylesheet);
+    return d_->stylesheet_.get().create_default_format();
 }
 
 } // namespace xlnt

@@ -1437,9 +1437,14 @@ void xlsx_producer::write_styles(const relationship & /*rel*/)
     // Format XFs
 
     write_start_element(xmlns, "cellXfs");
-    write_attribute("count", stylesheet.format_impls.size());
+    write_attribute("count", stylesheet.format_impls.size() + (stylesheet.default_format_impl.is_set() ? 1 : 0));
 
-    for (auto &current_format_impl : stylesheet.format_impls)
+	std::list<format_impl> formats;
+    if (stylesheet.default_format_impl.is_set())
+		formats.push_back(stylesheet.default_format_impl.get());
+    formats.insert(formats.end(), stylesheet.format_impls.begin(), stylesheet.format_impls.end());
+
+    for (auto &current_format_impl : formats)
     {
         write_start_element(xmlns, "xf");
 
