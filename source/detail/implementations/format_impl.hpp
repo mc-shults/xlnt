@@ -25,32 +25,32 @@ struct stylesheet;
 
 struct format_impl
 {
-	stylesheet *parent = nullptr;
+    stylesheet *parent = nullptr;
 
-	std::size_t id = 0;
+    std::size_t id = 0;
 
-	optional<std::size_t> alignment_id;
+    optional<std::size_t> alignment_id;
     optional<bool> alignment_applied;
 
-	optional<std::size_t> border_id;
+    optional<std::size_t> border_id;
     optional<bool> border_applied;
 
-	optional<std::size_t> fill_id;
+    optional<std::size_t> fill_id;
     optional<bool> fill_applied;
 
-	optional<std::size_t> font_id;
+    optional<std::size_t> font_id;
     optional<bool> font_applied;
 
-	optional<std::size_t> number_format_id;
+    optional<std::size_t> number_format_id;
     optional<bool> number_format_applied;
 
-	optional<std::size_t> protection_id;
+    optional<std::size_t> protection_id;
     optional<bool> protection_applied;
 
     bool pivot_button_ = false;
     bool quote_prefix_ = false;
 
-	optional<std::string> style;
+    optional<std::string> style;
 
     XLNT_API friend bool operator==(const format_impl &left, const format_impl &right)
     {

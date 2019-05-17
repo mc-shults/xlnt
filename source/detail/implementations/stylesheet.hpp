@@ -44,13 +44,84 @@ namespace detail {
 
 struct stylesheet
 {
-    class format create_format()
+    stylesheet()
     {
-        auto deleter = [](format_impl *ptr) {
-            ptr->parent->garbage_collect(ptr->id);
+        on_format_delete = std::make_shared<std::function<void(format_impl *)>>(
+            [this](format_impl *format) {
+                garbage_collect(format->id);
+            });
+    }
+
+    stylesheet(const stylesheet &other)
+        : stylesheet()
+    {
+        garbage_collection_enabled = other.garbage_collection_enabled;
+        known_fonts_enabled = other.known_fonts_enabled;
+
+        conditional_format_impls = other.conditional_format_impls;
+
+        //std::list<std::weak_ptr<format_impl>> format_impls;
+        for (auto weak_impl : other.format_impls)
+        {
+            auto shared_impl = weak_impl.lock();
+            if (!shared_impl)
+            {
+                format_impls.push_back(std::shared_ptr<format_impl>(nullptr));
+            }
+            else
+            {
+                auto new_impl = std::make_shared<format_impl>(*shared_impl);
+                new_impl->parent = this;
+                format_impls.push_back(new_impl);
+            }
+        }
+        for (auto *temp_format_impl : other.temp_format_impls)
+        {
+            if (!temp_format_impl)
+            {
+                temp_format_impls.push_back(nullptr);
+            }
+            else
+            {
+                auto *new_impl = new format_impl(*temp_format_impl);
+                new_impl->parent = this;
+                temp_format_impls.push_back(new_impl);
+            }
+        }
+        if (other.default_format_impl)
+        {
+            default_format_impl = std::make_shared<format_impl>(*other.default_format_impl);
+        }
+
+        style_impls = other.style_impls;
+        style_names = other.style_names;
+        default_slicer_style = other.default_slicer_style;
+
+        alignments = other.alignments;
+        borders = other.borders;
+        fills = other.fills;
+        fonts = other.fonts;
+        number_formats = other.number_formats;
+        protections = other.protections;
+
+        colors = other.colors;
+    }
+
+    std::function<void(format_impl *)> get_format_impl_deleter()
+    {
+        return [weak_on_delete = std::weak_ptr<std::function<void(format_impl *)>>(on_format_delete)](format_impl *ptr) {
+            auto shared_on_delete = weak_on_delete.lock();
+            if (shared_on_delete)
+            {
+                (*shared_on_delete)(ptr);
+            }
             delete ptr;
         };
-        std::shared_ptr<format_impl> impl(new format_impl, deleter);
+    }
+
+    class format create_format()
+    {
+        std::shared_ptr<format_impl> impl(new format_impl, get_format_impl_deleter());
         format_impls.push_back(std::weak_ptr<format_impl>(impl));
 
         impl->parent = this;
@@ -96,11 +167,8 @@ struct stylesheet
                 {
                     format_impls.resize(index + 1);
                 }
-                auto deleter = [](format_impl *ptr) {
-                    ptr->parent->garbage_collect(ptr->id);
-                    delete ptr;
-                };
-                auto result = std::shared_ptr<format_impl>(*temp_format_iter, deleter);
+
+                auto result = std::shared_ptr<format_impl>(*temp_format_iter, get_format_impl_deleter());
 
                 auto iter = format_impls.begin();
                 std::advance(iter, static_cast<std::list<format_impl>::difference_type>(index - (default_format_impl ? 1 : 0)));
@@ -441,20 +509,15 @@ struct stylesheet
         std::shared_ptr<format_impl> result;
         if (iter == format_impls.end())
         {
-            auto deleter = [](format_impl *ptr) {
-                ptr->parent->garbage_collect(ptr->id);
-                delete ptr;
-            };
-            result = std::shared_ptr<format_impl>(new format_impl(pattern), deleter);
+            result = std::shared_ptr<format_impl>(new format_impl(pattern), get_format_impl_deleter());
             format_impls.push_back(static_cast<std::weak_ptr<format_impl>>(result));
+            result->parent = this;
+            result->id = id;
         }
         else
         {
             result = iter->lock();
         }
-
-        result->parent = this;
-        result->id = id;
 
         return result;
     }
@@ -463,10 +526,6 @@ struct stylesheet
     {
         format_impl new_format = *pattern;
         new_format.style = style_name;
-        //if (pattern->references == 0)
-        //{
-        *pattern = new_format;
-        //}
         return find_or_create(new_format);
     }
 
@@ -475,10 +534,6 @@ struct stylesheet
         format_impl new_format = *pattern;
         new_format.alignment_id = find_or_add(alignments, new_alignment);
         new_format.alignment_applied = applied;
-        //if (pattern->references == 0)
-        //{
-        *pattern = new_format;
-        //}
         return find_or_create(new_format);
     }
 
@@ -487,10 +542,6 @@ struct stylesheet
         format_impl new_format = *pattern;
         new_format.border_id = find_or_add(borders, new_border);
         new_format.border_applied = applied;
-        //if (pattern->references == 0)
-        //{
-        *pattern = new_format;
-        //}
         return find_or_create(new_format);
     }
 
@@ -499,10 +550,6 @@ struct stylesheet
         format_impl new_format = *pattern;
         new_format.fill_id = find_or_add(fills, new_fill);
         new_format.fill_applied = applied;
-        //if (pattern->references == 0)
-        //{
-        *pattern = new_format;
-        //}
         return find_or_create(new_format);
     }
 
@@ -511,10 +558,6 @@ struct stylesheet
         format_impl new_format = *pattern;
         new_format.font_id = find_or_add(fonts, new_font);
         new_format.font_applied = applied;
-        if (pattern.use_count() == 2)
-        {
-            *pattern = new_format;
-        }
         return find_or_create(new_format);
     }
 
@@ -527,10 +570,6 @@ struct stylesheet
         }
         new_format.number_format_id = new_number_format.id();
         new_format.number_format_applied = applied;
-        //if (pattern->references == 0)
-        //{
-        *pattern = new_format;
-        //}
         return find_or_create(new_format);
     }
 
@@ -539,10 +578,6 @@ struct stylesheet
         format_impl new_format = *pattern;
         new_format.protection_id = find_or_add(protections, new_protection);
         new_format.protection_applied = applied;
-        //if (pattern->references == 0)
-        //{
-        *pattern = new_format;
-        //}
         return find_or_create(new_format);
     }
 
@@ -652,6 +687,8 @@ struct stylesheet
     std::vector<protection> protections;
 
     std::vector<color> colors;
+
+    std::shared_ptr<std::function<void(format_impl *)>> on_format_delete;
 };
 
 } // namespace detail
