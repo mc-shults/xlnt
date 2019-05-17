@@ -483,14 +483,6 @@ workbook workbook::empty()
         .font(default_font)
         .number_format(xlnt::number_format::general());
 
-	//detail::format_impl default_format;
-    //default_format.border_id = 0;
-	//default_format.border_applied = true;
-    //default_format.fill_id = 0;
-    //default_format.fill_applied = true;
-    //default_format.font_id = 0;
-    //default_format.font_applied = true;
-
     wb.create_default_format();
 
     xlnt::calculation_properties calc_props;

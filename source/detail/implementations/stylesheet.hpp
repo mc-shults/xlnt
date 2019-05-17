@@ -621,16 +621,17 @@ struct stylesheet
 
     workbook *parent = nullptr;
 
-    bool operator==(const stylesheet &rhs) const
+    bool compare_default_format(const stylesheet &rhs) const
     {
         if ((bool)default_format_impl != (bool)rhs.default_format_impl)
         {
             return false;
         }
-        if (default_format_impl && !(*default_format_impl == *rhs.default_format_impl))
-        {
-            return false;
-        }
+        return !default_format_impl || (*default_format_impl == *rhs.default_format_impl);
+    }
+
+	bool compare_format_impls(const stylesheet &rhs) const
+    {
         if (format_impls.size() != rhs.format_impls.size())
         {
             return false;
@@ -651,7 +652,11 @@ struct stylesheet
             iter++;
             rhs_iter++;
         }
+        return true;
+    }
 
+    bool operator==(const stylesheet &rhs) const
+    {
         // no equality on parent as there is only 1 stylesheet per borkbook hence would always be false
         return garbage_collection_enabled == rhs.garbage_collection_enabled
             && known_fonts_enabled == rhs.known_fonts_enabled
@@ -665,7 +670,9 @@ struct stylesheet
             && fonts == rhs.fonts
             && number_formats == rhs.number_formats
             && protections == rhs.protections
-            && colors == rhs.colors;
+            && colors == rhs.colors
+            && compare_default_format(rhs)
+            && compare_format_impls(rhs);
     }
 
     bool garbage_collection_enabled = true;
