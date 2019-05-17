@@ -588,12 +588,39 @@ struct stylesheet
 
     bool operator==(const stylesheet &rhs) const
     {
+        if ((bool)default_format_impl != (bool)rhs.default_format_impl)
+        {
+            return false;
+        }
+        if (default_format_impl && !(*default_format_impl == *rhs.default_format_impl))
+        {
+            return false;
+        }
+        if (format_impls.size() != rhs.format_impls.size())
+        {
+            return false;
+        }
+
+        auto iter = format_impls.begin();
+        auto rhs_iter = rhs.format_impls.begin();
+        while (iter != format_impls.end())
+        {
+            if ((bool)iter->use_count() != (bool)rhs_iter->use_count())
+            {
+                return false;
+            }
+            if (!iter->expired() && !(*iter->lock() == *rhs_iter->lock()))
+            {
+                return false;
+            }
+            iter++;
+            rhs_iter++;
+        }
+
         // no equality on parent as there is only 1 stylesheet per borkbook hence would always be false
         return garbage_collection_enabled == rhs.garbage_collection_enabled
             && known_fonts_enabled == rhs.known_fonts_enabled
             && conditional_format_impls == rhs.conditional_format_impls
-            //&& format_impls == rhs.format_impls
-            //&& default_format_impl == rhs.default_format_impl
             && style_impls == rhs.style_impls
             && style_names == rhs.style_names
             && default_slicer_style == rhs.default_slicer_style
