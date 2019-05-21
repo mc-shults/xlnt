@@ -51,6 +51,11 @@ format format::style(const std::string &new_style)
     return format(d_);
 }
 
+bool format::has_font() const
+{
+    return d_->font_id.is_set();
+}
+
 bool format::has_style() const
 {
     return d_->style.is_set();
@@ -68,12 +73,12 @@ style format::style()
 
 const style format::style() const
 {
-	if (!has_style())
-	{
-		throw invalid_attribute();
-	}
+    if (!has_style())
+    {
+        throw invalid_attribute();
+    }
 
-	return d_->parent->style(d_->style.get());
+    return d_->parent->style(d_->style.get());
 }
 
 xlnt::alignment format::alignment() const
@@ -217,6 +222,5 @@ void format::quote_prefix(bool quote)
 {
     d_->quote_prefix_ = quote;
 }
-
 
 } // namespace xlnt

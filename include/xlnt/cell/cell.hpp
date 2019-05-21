@@ -364,6 +364,11 @@ public:
     /// </summary>
     void number_format(const class number_format &format);
 
+	/// <summary>
+    /// Returns true if this cell has had a font applied to it.
+    /// </summary>
+    bool has_font() const;
+
     /// <summary>
     /// Returns the font applied to the text in this cell.
     /// </summary>
