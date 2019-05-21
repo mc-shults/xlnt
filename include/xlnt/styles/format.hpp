@@ -105,6 +105,11 @@ public:
     /// </summary>
     bool fill_applied() const;
 
+	/// <summary>
+    /// Returns true if this format has a corresponding font applied.
+    /// </summary>
+    bool has_font() const;
+
     /// <summary>
     /// Returns the font of this format.
     /// </summary>

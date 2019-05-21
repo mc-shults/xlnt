@@ -428,7 +428,7 @@ void cell::hyperlink(xlnt::range target, const std::string &display)
     d_->hyperlink_ = detail::hyperlink_impl();
     d_->hyperlink_.get().relationship = xlnt::relationship("", relationship_type::hyperlink,
         uri(""), uri(range_address), target_mode::internal);
-    
+
     // if a value is already present, the display string is ignored
     if (has_value())
     {
@@ -916,6 +916,11 @@ fill cell::fill() const
 
 font cell::font() const
 {
+    if (!has_format() || !format().has_font())
+    {
+        throw invalid_attribute();
+    }
+
     return format().font();
 }
 
@@ -927,6 +932,11 @@ number_format cell::number_format() const
 protection cell::protection() const
 {
     return format().protection();
+}
+
+bool cell::has_font() const
+{
+    return has_format() && format().has_font();
 }
 
 bool cell::has_hyperlink() const
