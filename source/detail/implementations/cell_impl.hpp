@@ -42,9 +42,9 @@ struct worksheet_impl;
 struct cell_impl
 {
     cell_impl();
-    cell_impl(const cell_impl &other) = default;
+    cell_impl(const cell_impl &other);
     cell_impl(cell_impl &&other) = default;
-    cell_impl &operator=(const cell_impl &other) = default;
+    cell_impl &operator=(const cell_impl &other);
     cell_impl &operator=(cell_impl &&other) = default;
     
     cell_type type_;
