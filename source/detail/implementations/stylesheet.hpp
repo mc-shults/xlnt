@@ -501,8 +501,11 @@ struct stylesheet
     {
         std::size_t id = default_format_impl ? 1 : 0;
         auto iter = format_impls.begin();
-        while (iter != format_impls.end() && !(*iter->lock() == pattern))
+        while (iter != format_impls.end())
         {
+            auto shared_format = iter->lock();
+            if (shared_format && *iter->lock() == pattern)
+                break;
             ++id;
             ++iter;
         }
