@@ -470,12 +470,7 @@ std::string cell::formula() const
     return d_->formula_.get();
 }
 
-void cell::clear_formula()
-{
-    clear_formula(true);
-}
-
-void cell::clear_formula(bool garbadge_collect)
+void cell::clear_formula(bool garbadge_collect /*= true*/)
 {
     if (has_formula())
     {
