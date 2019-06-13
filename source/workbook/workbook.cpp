@@ -1028,7 +1028,7 @@ void workbook::load(const std::wstring &filename, const std::string &password)
 void workbook::remove_sheet(worksheet ws)
 {
     auto match_iter = std::find_if(d_->worksheets_.begin(), d_->worksheets_.end(),
-      [=](detail::worksheet_impl &comp) { return &comp == ws.d_; });
+        [=](detail::worksheet_impl &comp) { return &comp == ws.d_; });
 
     if (match_iter == d_->worksheets_.end())
     {
@@ -1556,10 +1556,14 @@ void workbook::calculation_properties(const class calculation_properties &props)
     d_->calculation_properties_ = props;
 }
 
+void workbook::clear_formulas()
+{
+    apply_to_cells([](cell c) { c.clear_formula(false); });
+    garbage_collect_formulae();
+}
+
 void workbook::garbage_collect_formulae()
 {
-    auto any_with_formula = false;
-
     for (auto ws : *this)
     {
         for (auto row : ws.rows(true))
@@ -1568,13 +1572,11 @@ void workbook::garbage_collect_formulae()
             {
                 if (cell.has_formula())
                 {
-                    any_with_formula = true;
+                    return;
                 }
             }
         }
     }
-
-    if (any_with_formula) return;
 
     auto wb_rel = manifest().relationship(path("/"), relationship_type::office_document);
 

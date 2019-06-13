@@ -472,10 +472,17 @@ std::string cell::formula() const
 
 void cell::clear_formula()
 {
+    clear_formula(true);
+}
+
+void cell::clear_formula(bool garbadge_collect)
+{
     if (has_formula())
     {
         d_->formula_.clear();
-        worksheet().garbage_collect_formulae();
+
+		if (garbadge_collect)
+			worksheet().garbage_collect_formulae();
     }
 }
 

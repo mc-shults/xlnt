@@ -739,6 +739,13 @@ public:
     /// </summary>
     bool known_fonts_enabled() const;
 
+	//Formulas
+
+	/// <summary>
+    /// Clear all cell-level formulas
+	/// </summary>
+    void clear_formulas();
+
     // Manifest
 
     /// <summary>

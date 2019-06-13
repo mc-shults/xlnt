@@ -477,6 +477,12 @@ public:
     /// <summary>
     /// Removes the formula from this cell. After this is called, has_formula() will return false.
     /// </summary>
+    void clear_formula(bool garbadge_collect);
+
+	/// <summary>
+    /// Removes the formula from this cell. After this is called, has_formula() will return false.
+    /// Equivalent to style(nclear_formula(true)).
+    /// </summary>
     void clear_formula();
 
     /// <summary>
