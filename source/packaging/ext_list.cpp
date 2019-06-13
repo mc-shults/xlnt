@@ -33,7 +33,7 @@ namespace {
                 }
                 for (auto &ele : attribs)
                 {
-                    s.attribute(ele.first.string(), ele.second.value);
+                    s.attribute(ele.first.namespace_(), ele.first.name(), ele.second.value);
                 }
                 break;
             }
