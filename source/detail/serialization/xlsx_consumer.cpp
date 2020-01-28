@@ -116,7 +116,7 @@ bool is_true(const std::string &bool_string)
 #endif
 }
 
-};struct number_converter
+struct number_converter
 {
     number_converter()
         : result(0)

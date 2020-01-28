@@ -27,10 +27,6 @@
 
 #include <xlnt/xlnt_config.hpp>
 
-#if defined(_MSC_VER) && _HAS_CXX17
-
-#include <charconv>
-
 namespace xlnt {
 
 /// <summary>
