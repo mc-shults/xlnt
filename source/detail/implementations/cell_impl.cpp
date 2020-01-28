@@ -53,6 +53,7 @@ cell_impl::cell_impl(const cell_impl &other)
     hyperlink_ = other.hyperlink_;
     format_ = other.format_;
     comment_ = other.comment_;
+    phonetics_visible_ = other.phonetics_visible_;
 
     if (format_.is_set())
     {
@@ -78,6 +79,7 @@ cell_impl &cell_impl::operator=(const cell_impl &other)
     hyperlink_ = other.hyperlink_;
     format_ = other.format_;
     comment_ = other.comment_;
+    phonetics_visible_ = other.phonetics_visible_;
 
     if (format_.is_set())
     {
