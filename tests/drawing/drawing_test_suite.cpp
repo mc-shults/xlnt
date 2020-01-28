@@ -21,45 +21,39 @@
 // @license: http://www.opensource.org/licenses/mit-license.php
 // @author: see AUTHORS file
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated"
-#pragma clang diagnostic ignored "-Wweak-vtables"
-#pragma clang diagnostic ignored "-Wsign-conversion"
-#include <utf8.h>
-#pragma clang diagnostic pop
+#include <iostream>
 
-#include <detail/unicode.hpp>
-#include <xlnt/utils/exceptions.hpp>
 
-namespace xlnt {
-namespace detail {
+#include <helpers/test_suite.hpp>
+#include <xlnt/worksheet/worksheet.hpp>
+#include <xlnt/workbook/workbook.hpp>
+#include <xlnt/utils/path.hpp>
 
-std::u16string utf8_to_utf16(const std::string &utf8_string)
+class drawing_test_suite : public test_suite
 {
-    std::u16string result;
-    utf8::utf8to16(utf8_string.begin(), utf8_string.end(), std::back_inserter(result));
-
-    return result;
-}
-
-std::string utf16_to_utf8(const std::u16string &utf16_string)
-{
-    std::string result;
-    utf8::utf16to8(utf16_string.begin(), utf16_string.end(), std::back_inserter(result));
-
-    return result;
-}
-
-size_t string_length(const std::string &utf8_string)
-{
-    auto end_it = utf8::find_invalid(utf8_string.begin(), utf8_string.end());
-    if (end_it != utf8_string.end())
+public:
+    drawing_test_suite()
     {
-        throw xlnt::exception("Invalid UTF-8 encoding detected");
+        register_test(test_load_save);
     }
 
-    return utf8::distance(utf8_string.begin(), end_it);
-}
+    void test_load_save()
+    {
+        xlnt::workbook wb1;
+        wb1.load(path_helper::test_file("2_minimal.xlsx"));
+        auto ws1 = wb1.active_sheet();
+        xlnt_assert_equals(ws1.has_drawing(), false);
 
-} // namespace detail
-} // namespace xlnt
+        xlnt::workbook wb2;
+        wb2.load(path_helper::test_file("14_images.xlsx"));
+        auto ws2 = wb2.active_sheet();
+        xlnt_assert_equals(ws2.has_drawing(), true);
+        wb2.save("temp_with_images.xlsx");
+
+        xlnt::workbook wb3;
+        wb3.load("temp_with_images.xlsx");
+        auto ws3 = wb3.active_sheet();
+        xlnt_assert_equals(ws3.has_drawing(), true);
+    }
+};
+static drawing_test_suite x;

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018 Thomas Fussell
+// Copyright (c) 2014-2018
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,49 +21,20 @@
 // @license: http://www.opensource.org/licenses/mit-license.php
 // @author: see AUTHORS file
 
-#pragma once
-
-#include <xlnt/xlnt_config.hpp>
-#include <sstream>
-
-#if defined(_MSC_VER) && _HAS_CXX17
-
-#include <charconv>
+#include <xlnt/cell/phonetic_run.hpp>
+#include <tuple>
 
 namespace xlnt {
-/// <summary>
-/// Takes in any nuber and outputs a string form of that number which will
-/// serialise and deserialise without loss of precision
-/// </summary>
-template <typename Number>
-std::string serialize_number_to_string(Number num)
+
+bool phonetic_run::operator==(const phonetic_run &other) const
 {
-    std::array<char, DBL_MAX_10_EXP + 1> str;
-    auto result = std::to_chars(str.data(), str.data() + str.size(), num);
-    *result.ptr = '\0';
-    return str.data();
-}
+    return std::tie(text, start, end, preserve_space) ==
+           std::tie(other.text, other.start, other.end, other.preserve_space);
 }
 
-#else
-
-namespace xlnt {
-/// <summary>
-/// Takes in any nuber and outputs a string form of that number which will
-/// serialise and deserialise without loss of precision
-/// </summary>
-template <typename Number>
-std::string serialize_number_to_string(Number num)
+bool phonetic_run::operator!=(const phonetic_run &other) const
 {
-    static auto &facet = std::use_facet<std::num_put<char>>(std::locale::classic());
-    // more digits and excel won't match
-    constexpr int Excel_Digit_Precision = 15; //sf
-    std::stringstream ss;
-    ss.precision(Excel_Digit_Precision);
-    facet.put(std::ostreambuf_iterator<char>(ss), ss, ss.fill(), num);
-    return ss.str();
-}
+    return !(*this == other);
 }
 
-#endif
-
+} // namespace xlnt

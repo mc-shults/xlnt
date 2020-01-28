@@ -405,7 +405,7 @@ orientation from_string(const std::string &string)
     if (string == "default") return orientation::default_orientation;
     else if (string == "landscape") return orientation::landscape;
     else if (string == "portrait") return orientation::portrait;
-    default_case(orientation::default);
+    default_case(orientation::default_orientation);
 }
 
 } // namespace detail
