@@ -825,8 +825,18 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
                     target_.d_->view_.get().active_tab = ws.id() - 1;
                 }
 
+                if (parser().attribute_present("zoomScale"))
+                {
+                    new_view.zoom_scale(parser().attribute<int>("zoomScale"));
+                }
+
+                if (parser().attribute_present("zoomScaleNormal"))
+                {
+                    new_view.zoom_scale_normal(parser().attribute<int>("zoomScaleNormal"));
+                }
+
                 skip_attributes({"windowProtection", "showFormulas", "showRowColHeaders", "showZeros", "rightToLeft", "showRuler", "showOutlineSymbols", "showWhiteSpace",
-                    "view", "topLeftCell", "colorId", "zoomScale", "zoomScaleNormal", "zoomScaleSheetLayoutView",
+                    "view", "topLeftCell", "colorId", "zoomScaleNormal", "zoomScaleSheetLayoutView",
                     "zoomScalePageLayoutView"});
 
                 while (in_element(qn("spreadsheetml", "sheetView")))
