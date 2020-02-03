@@ -77,6 +77,11 @@ struct XLNT_API sheet_pr
     /// whether the conditional formatting calculations shall be evaluated
     /// </summary>
     optional<bool> enable_format_condition_calculation;
+
+    /// <summary>
+    /// tab color
+    /// </summary>
+    optional<color> tab_color;
 };
 
 inline bool operator==(const sheet_pr &lhs, const sheet_pr &rhs)

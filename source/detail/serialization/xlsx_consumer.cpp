@@ -755,14 +755,13 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
             { // optional, boolean, true
                 props.enable_format_condition_calculation.set(parser().attribute<bool>("enableFormatConditionsCalculation"));
             }
-            ws.d_->sheet_properties_.set(props);
             while (in_element(current_worksheet_element))
             {
                 auto sheet_pr_child_element = expect_start_element(xml::content::simple);
 
                 if (sheet_pr_child_element == qn("spreadsheetml", "tabColor")) // CT_Color 0-1
                 {
-                    read_color();
+                    props.tab_color = read_color();
                 }
                 else if (sheet_pr_child_element == qn("spreadsheetml", "outlinePr")) // CT_OutlinePr 0-1
                 {
@@ -783,6 +782,7 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
 
                 expect_end_element(sheet_pr_child_element);
             }
+            ws.d_->sheet_properties_.set(props);
         }
         else if (current_worksheet_element == qn("spreadsheetml", "dimension")) // CT_SheetDimension 0-1
         {

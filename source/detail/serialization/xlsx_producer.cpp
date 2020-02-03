@@ -2275,6 +2275,13 @@ void xlsx_producer::write_worksheet(const relationship &rel)
             write_attribute("enableFormatConditionsCalculation", props.enable_format_condition_calculation.get());
         }
 
+        if (props.tab_color.is_set())
+        {
+            write_start_element(xmlns, "tabColor");
+            write_color(props.tab_color.get());
+            write_end_element(xmlns, "tabColor");
+        }
+
         write_start_element(xmlns, "outlinePr");
         write_attribute("summaryBelow", "1");
         write_attribute("summaryRight", "1");
