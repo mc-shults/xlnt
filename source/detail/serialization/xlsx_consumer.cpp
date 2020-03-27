@@ -43,6 +43,7 @@
 #include <detail/serialization/vector_streambuf.hpp>
 #include <detail/serialization/xlsx_consumer.hpp>
 #include <detail/serialization/zstream.hpp>
+#include <detail/serialization/scope_locale.hpp>
 
 namespace {
 /// string_equal
@@ -1724,6 +1725,8 @@ void xlsx_consumer::read_part(const std::vector<relationship> &rel_chain)
 
 void xlsx_consumer::populate_workbook(bool streaming)
 {
+    scope_locale use_locale(LC_NUMERIC, "C");
+
     streaming_ = streaming;
 
     target_.clear();

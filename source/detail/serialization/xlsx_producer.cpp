@@ -43,6 +43,7 @@
 #include <detail/serialization/vector_streambuf.hpp>
 #include <detail/serialization/xlsx_producer.hpp>
 #include <detail/serialization/zstream.hpp>
+#include <detail/serialization/scope_locale.hpp>
 
 namespace {
 
@@ -122,6 +123,8 @@ worksheet xlsx_producer::add_worksheet(const std::string &title)
 
 void xlsx_producer::populate_archive(bool streaming)
 {
+    scope_locale use_locale(LC_NUMERIC, "C");
+
     streaming_ = streaming;
 
     write_content_types();
