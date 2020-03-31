@@ -36,12 +36,9 @@ namespace {
 
 const std::unordered_map<std::size_t, xlnt::number_format> &builtin_formats()
 {
-    static std::unordered_map<std::size_t, xlnt::number_format> *formats = nullptr;
-    
-    if (formats == nullptr)
+    static std::unordered_map<std::size_t, xlnt::number_format> formats = []()
     {
-        const std::unordered_map<std::size_t, std::string> format_strings
-        {
+        const std::unordered_map<std::size_t, std::string> format_strings{
             {0, "General"},
             {1, "0"},
             {2, "0.00"},
@@ -76,20 +73,20 @@ const std::unordered_map<std::size_t, xlnt::number_format> &builtin_formats()
             {46, "[h]:mm:ss"},
             {47, "mmss.0"},
             {48, "##0.0E+0"},
-            {49, "@"}
-        };
+            {49, "@"}};
 
-        formats = new std::unordered_map<std::size_t, xlnt::number_format>();
-        auto &formats_ref = *formats;
+        std::unordered_map<std::size_t, xlnt::number_format> result;
 
         for (auto format_string_pair : format_strings)
         {
-            formats_ref[format_string_pair.first] =
+            result[format_string_pair.first] =
                 xlnt::number_format(format_string_pair.second, format_string_pair.first);
         }
-    }
 
-    return *formats;
+        return result;
+    } ();
+    
+    return formats;
 }
 
 } // namespace
@@ -133,44 +130,44 @@ const number_format number_format::percentage_00()
 
 const number_format number_format::date_yyyymmdd2()
 {
-    static const number_format *format = new number_format("yyyy-mm-dd");
-    return *format;
+    static const number_format format{"yyyy-mm-dd"};
+    return format;
 }
 
 const number_format number_format::date_yymmdd()
 {
-    static const number_format *format = new number_format("yy-mm-dd");
-    return *format;
+    static const number_format format{"yy-mm-dd"};
+    return format;
 }
 
 const number_format number_format::date_ddmmyyyy()
 {
-    static const number_format *format = new number_format("dd/mm/yy");
-    return *format;
+    static const number_format format{"dd/mm/yy"};
+    return format;
 }
 
 const number_format number_format::date_dmyslash()
 {
-    static const number_format *format = new number_format("d/m/yy");
-    return *format;
+    static const number_format format{"d/m/yy"};
+    return format;
 }
 
 const number_format number_format::date_dmyminus()
 {
-    static const number_format *format = new number_format("d-m-yy");
-    return *format;
+    static const number_format format{"d-m-yy"};
+    return format;
 }
 
 const number_format number_format::date_dmminus()
 {
-    static const number_format *format = new number_format("d-m");
-    return *format;
+    static const number_format format{"d-m"};
+    return format;
 }
 
 const number_format number_format::date_myminus()
 {
-    static const number_format *format = new number_format("m-yy");
-    return *format;
+    static const number_format format{"m-yy"};
+    return format;
 }
 
 const number_format number_format::date_xlsx14()
@@ -200,8 +197,8 @@ const number_format number_format::date_xlsx22()
 
 const number_format number_format::date_datetime()
 {
-    static const number_format *format = new number_format("yyyy-mm-dd h:mm:ss");
-    return *format;
+    static const number_format format{"yyyy-mm-dd h:mm:ss"};
+    return format;
 }
 
 const number_format number_format::date_time1()
