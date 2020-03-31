@@ -33,8 +33,7 @@ namespace {
 
 const std::unordered_map<int, std::string> known_locales()
 {
-    static const std::unordered_map<int, std::string> *all = new std::unordered_map<int, std::string>(
-        {
+    static const std::unordered_map<int, std::string> all{
             {0x1, "Arabic"},
             {0x2, "Bulgarian"},
             {0x3, "Catalan"},
@@ -465,9 +464,9 @@ const std::unordered_map<int, std::string> known_locales()
             {0x7C68, "Hausa (Latin)"},
             {0x7C86, "K’iche’"},
             {0x7C92, "Central Kurdish (Arabic)"},
-        });
+        };
 
-    return *all;
+    return all;
 }
 
 [[noreturn]] void unhandled_case_error()
@@ -1768,11 +1767,10 @@ std::string number_formatter::fill_fraction_placeholders(const format_placeholde
 
 std::string number_formatter::format_number(const format_code &format, double number)
 {
-    static const std::vector<std::string> *month_names = new std::vector<std::string>{"January", "February", "March",
+    static const std::vector<std::string> month_names {"January", "February", "March",
         "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
-    static const std::vector<std::string> *day_names =
-        new std::vector<std::string>{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    static const std::vector<std::string> day_names {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     std::string result;
 
@@ -1910,13 +1908,13 @@ std::string number_formatter::format_number(const format_code &format, double nu
 
         case template_part::template_type::month_abbreviation:
             {
-                result.append(month_names->at(static_cast<std::size_t>(dt.month) - 1).substr(0, 3));
+                result.append(month_names.at(static_cast<std::size_t>(dt.month) - 1).substr(0, 3));
                 break;
             }
 
         case template_part::template_type::month_name:
             {
-                result.append(month_names->at(static_cast<std::size_t>(dt.month) - 1));
+                result.append(month_names.at(static_cast<std::size_t>(dt.month) - 1));
                 break;
             }
 
@@ -2072,19 +2070,19 @@ std::string number_formatter::format_number(const format_code &format, double nu
 
         case template_part::template_type::month_letter:
             {
-                result.append(month_names->at(static_cast<std::size_t>(dt.month) - 1).substr(0, 1));
+                result.append(month_names.at(static_cast<std::size_t>(dt.month) - 1).substr(0, 1));
                 break;
             }
 
         case template_part::template_type::day_abbreviation:
             {
-                result.append(day_names->at(static_cast<std::size_t>(dt.weekday())).substr(0, 3));
+                result.append(day_names.at(static_cast<std::size_t>(dt.weekday())).substr(0, 3));
                 break;
             }
 
         case template_part::template_type::day_name:
             {
-                result.append(day_names->at(static_cast<std::size_t>(dt.weekday())));
+                result.append(day_names.at(static_cast<std::size_t>(dt.weekday())));
                 break;
             }
         }

@@ -155,7 +155,7 @@ namespace xlnt {
 
 const std::unordered_map<std::string, int> &cell::error_codes()
 {
-    static const auto *codes = new std::unordered_map<std::string, int>{
+    static const std::unordered_map<std::string, int> codes {
         {"#NULL!", 0},
         {"#DIV/0!", 1},
         {"#VALUE!", 2},
@@ -164,7 +164,7 @@ const std::unordered_map<std::string, int> &cell::error_codes()
         {"#NUM!", 5},
         {"#N/A!", 6}};
 
-    return *codes;
+    return codes;
 }
 
 std::string cell::check_string(const std::string &to_check)
