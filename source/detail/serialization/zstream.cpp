@@ -481,7 +481,7 @@ std::unique_ptr<std::streambuf> ozstream::open(const path &filename)
 {
     zheader header;
     header.filename = filename.string();
-    return open(header);
+    return open(std::move(header));
 }
 
 std::unique_ptr<std::streambuf> ozstream::open(zheader header)
