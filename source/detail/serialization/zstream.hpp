@@ -89,6 +89,7 @@ public:
     /// Returns a pointer to a streambuf which compresses the data it receives.
     /// </summary>
     std::unique_ptr<std::streambuf> open(const path &file);
+    std::unique_ptr<std::streambuf> open(zheader header);
 
 private:
     std::vector<zheader> file_headers_;

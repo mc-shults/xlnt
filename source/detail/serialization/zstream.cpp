@@ -481,6 +481,11 @@ std::unique_ptr<std::streambuf> ozstream::open(const path &filename)
 {
     zheader header;
     header.filename = filename.string();
+    return open(header);
+}
+
+std::unique_ptr<std::streambuf> ozstream::open(zheader header)
+{
     file_headers_.push_back(header);
     auto buffer = new zip_streambuf_compress(&file_headers_.back(), destination_stream_);
 
