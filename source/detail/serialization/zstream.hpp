@@ -57,8 +57,8 @@ struct XLNT_API zheader
     std::uint16_t version = 20;
     std::uint16_t flags = 0;
     std::uint16_t compression_type = 8;
-    std::uint16_t stamp_date = 0;
     std::uint16_t stamp_time = 0;
+    std::uint16_t stamp_date = 0;
     std::uint32_t crc = 0;
     std::uint32_t compressed_size = 0;
     std::uint32_t uncompressed_size = 0;

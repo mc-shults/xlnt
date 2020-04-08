@@ -141,8 +141,8 @@ void write_header(const xlnt::detail::zheader &header, std::ostream &ostream, co
     write_int(ostream, header.version);
     write_int(ostream, header.flags);
     write_int(ostream, header.compression_type);
-    write_int(ostream, header.stamp_date);
     write_int(ostream, header.stamp_time);
+    write_int(ostream, header.stamp_date);
     write_int(ostream, header.crc);
     write_int(ostream, header.compressed_size);
     write_int(ostream, header.uncompressed_size);
